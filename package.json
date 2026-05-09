@@ -1,0 +1,20 @@
+{
+  "name": "yt-summarizer",
+  "version": "1.0.0",
+  "description": "AI YouTube Video Summarizer — Full MERN Stack Application",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "start:backend": "cd backend && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "mongodb": "^7.1.1",
+    "mongoose": "^9.3.3"
+  }
+}
