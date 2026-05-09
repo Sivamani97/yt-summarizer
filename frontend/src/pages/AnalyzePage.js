@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { videoAPI } from '../services/api';
 import toast from 'react-hot-toast';
-import { Youtube, Zap, RefreshCw, ChevronDown, Info, Sparkles, Clock, FileText, Brain } from 'lucide-react';
+import { Youtube, Zap, RefreshCw, Info, Sparkles, FileText, Brain } from 'lucide-react';
 
 const EXAMPLE_URLS = [
   'https://www.youtube.com/watch?v=8mAITcNt710', // Harvard CS50 – Intro to CS
