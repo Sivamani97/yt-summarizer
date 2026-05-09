@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-import { LayoutDashboard, Youtube, History, User, LogOut, Menu, X, Zap } from 'lucide-react';
+import { LayoutDashboard, Youtube, History, LogOut, Menu, X, Zap } from 'lucide-react';
 
 const navLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
