@@ -1,6 +1,9 @@
 {
   "name": "yt-summarizer-backend",
   "version": "1.0.0",
+  "engines": {
+  "node": "20.x"
+},
   "description": "AI YouTube Video Summarizer - Backend API",
   "main": "server.js",
   "scripts": {
