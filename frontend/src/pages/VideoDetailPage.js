@@ -229,13 +229,13 @@ export default function VideoDetailPage() {
           {/* SUMMARY */}
           {activeTab === 'summary' && (
             <div className="card">
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:10 }}>
+              <div className="section-header">
                 <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
                   <FileText size={18} color="var(--amber)" /> Summary
                 </h2>
                 <CopyButton text={analysis?.summary || ''} />
               </div>
-              <p style={{ fontSize:'clamp(14px,1.6vw,15px)', lineHeight:1.9, color:'var(--text-secondary)', whiteSpace:'pre-wrap' }}>
+              <p className="summary-text">
                 {analysis?.summary || 'No summary available for this video.'}
               </p>
             </div>
@@ -244,7 +244,7 @@ export default function VideoDetailPage() {
           {/* BULLET POINTS */}
           {activeTab === 'bullets' && (
             <div className="card">
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:10 }}>
+              <div className="section-header">
                 <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
                   <Zap size={18} color="var(--amber)" /> Key Takeaways
                 </h2>
@@ -286,7 +286,7 @@ export default function VideoDetailPage() {
           {/* KEY CONCEPTS */}
           {activeTab === 'concepts' && (
             <div className="card">
-              <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:10 }}>
+              <div className="section-header">
                 <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
                   <Brain size={18} color="var(--amber)" /> Key Concepts
                 </h2>
@@ -479,7 +479,7 @@ export default function VideoDetailPage() {
             placeholder="Add your notes, thoughts, or reflections about this video…"
             style={{ resize:'vertical', fontFamily:'var(--font-body)', lineHeight:1.7, fontSize:14 }}
           />
-          <div style={{ display:'flex', justifyContent:'flex-end', marginTop:10 }}>
+          <div className="notes-save-row">
             <button
               onClick={handleSaveNotes}
               className="btn btn-primary btn-sm"

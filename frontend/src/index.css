@@ -655,6 +655,36 @@ code, pre { font-family: var(--font-mono); }
   gap: 8px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
+}
+
+/* Summary text justification */
+.summary-text {
+  font-size: clamp(14px, 1.6vw, 15px);
+  line-height: 1.9;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  word-break: break-word;
+}
+
+/* Notes save row */
+.notes-save-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/* Tab content section header */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 /* ═══════════════════════════════════════════════
@@ -828,9 +858,40 @@ code, pre { font-family: var(--font-mono); }
   /* Filter bar: search takes full width row */
   .filter-search { min-width: 100%; }
 
-  /* Video detail actions wrap */
-  .video-detail-action-btns { gap: 6px; }
-  .video-detail-action-btns .btn-sm { font-size: 11px; padding: 5px 10px; }
+  /* Video detail actions: full-width row on mobile */
+  .video-detail-action-btns {
+    gap: 6px;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .video-detail-action-btns .btn-sm {
+    font-size: 11px;
+    padding: 5px 10px;
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  /* Back button: keep it lean */
+  .video-detail-actions > .btn-ghost {
+    flex-shrink: 0;
+  }
+
+  /* Summary text: justified on all screens, relax hyphens on mobile */
+  .summary-text {
+    text-align: left;
+    hyphens: none;
+    -webkit-hyphens: none;
+  }
+
+  /* Notes save button: full-width on mobile */
+  .notes-save-row {
+    justify-content: stretch;
+  }
+  .notes-save-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
 
   /* Landing URL preview row: stack */
   .url-preview-row { flex-direction: column; }
