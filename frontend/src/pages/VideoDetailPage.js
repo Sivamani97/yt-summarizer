@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { videoAPI } from '../services/api';
 import { VideoDetailSkeleton } from '../components/ui/Skeleton';

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { videoAPI } from '../services/api';
 import { useDebounce } from '../hooks/useDebounce';
@@ -17,7 +17,6 @@ export default function HistoryPage() {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const debouncedSearch = useDebounce(search, 350);
-  const mounted = useRef(false);
 
   const fetchVideos = useCallback(async (pg = 1) => {
     setLoading(true);

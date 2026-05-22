@@ -129,7 +129,7 @@ export default function VideoChatbot({ videoId, videoTitle }) {
 
       {/* ── Chat panel ── */}
       <div style={{
-        position: 'fixed', bottom: 100, right: 28, zIndex: 9998,
+        position: 'fixed', zIndex: 9998,
         width: isMaximized ? 'calc(100vw - 40px)' : 'min(400px, calc(100vw - 56px))',
         height: isMaximized ? 'calc(100vh - 120px)' : 'auto',
         maxHeight: isMaximized ? 'none' : 580,
