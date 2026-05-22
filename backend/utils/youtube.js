@@ -254,7 +254,6 @@ const fetchTranscript = async (videoId) => {
   // Run in parallel groups for speed — fastest method wins
   // Group A: Most reliable methods
   const groupA = await Promise.any([
-    tryESMLib(videoId),
     tryPlayerResponse(videoId),
   ]).catch(() => null);
 
@@ -267,7 +266,6 @@ const fetchTranscript = async (videoId) => {
   // Group B: Alternative methods
   const groupB = await Promise.any([
     tryTimedTextLoop(videoId),
-    trySupadata(videoId),
   ]).catch(() => null);
 
   if (groupB) {
@@ -277,16 +275,30 @@ const fetchTranscript = async (videoId) => {
   console.log('[Transcript] GroupB failed, trying GroupC...');
 
   // Group C: Last resort scrapers
-  const groupC = await Promise.any([
-    tryKome(videoId),
-    tryTranscriptSite(videoId),
-  ]).catch(() => null);
+  let groupC = null;
 
-  if (groupC) {
-    return { success: true, transcript: groupC.text, wordCount: groupC.text.split(/\s+/).length, lang: groupC.lang, source: 'groupC' };
+  try {
+    groupC = await Promise.any([
+      tryKome(videoId),
+      tryTranscriptSite(videoId),
+    ]);
+  } catch (err) {
+    groupC = null;
   }
 
-  console.log(`[Transcript] ===== ALL FAILED for ${videoId} =====\n`);
+  if (groupC && groupC.text) {
+    console.log(`[Transcript] SUCCESS via GroupC chars=${groupC.text.length}`);
+
+    return {
+      success: true,
+      transcript: groupC.text,
+      wordCount: groupC.text.split(/\s+/).length,
+      lang: groupC.lang,
+      source: 'groupC'
+    };
+  }
+
+  console.log(`[Transcript] ===== ALL FAILED for ${videoId} =====`);
   return {
     success: false,
     transcript: null,
