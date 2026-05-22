@@ -274,27 +274,35 @@ const fetchTranscript = async (videoId) => {
 
   console.log('[Transcript] GroupB failed, trying GroupC...');
 
-  // Group C: Last resort scrapers
-  let groupC = null;
+  // Group C: Last resort scrapers (SEQUENTIAL FALLBACK)
 
-  try {
-    groupC = await Promise.any([
-      tryKome(videoId),
-      tryTranscriptSite(videoId),
-    ]);
-  } catch (err) {
-    groupC = null;
-  }
+  // Try Kome first
+  const komeResult = await tryKome(videoId);
 
-  if (groupC && groupC.text) {
-    console.log(`[Transcript] SUCCESS via GroupC chars=${groupC.text.length}`);
+  if (komeResult && komeResult.text) {
+    console.log(`[Transcript] SUCCESS via Kome chars=${komeResult.text.length}`);
 
     return {
       success: true,
-      transcript: groupC.text,
-      wordCount: groupC.text.split(/\s+/).length,
-      lang: groupC.lang,
-      source: 'groupC'
+      transcript: komeResult.text,
+      wordCount: komeResult.text.split(/\s+/).length,
+      lang: komeResult.lang,
+      source: 'kome'
+    };
+  }
+
+  // Try TranscriptSite only if Kome fails
+  const transcriptSiteResult = await tryTranscriptSite(videoId);
+
+  if (transcriptSiteResult && transcriptSiteResult.text) {
+    console.log(`[Transcript] SUCCESS via TranscriptSite chars=${transcriptSiteResult.text.length}`);
+
+    return {
+      success: true,
+      transcript: transcriptSiteResult.text,
+      wordCount: transcriptSiteResult.text.split(/\s+/).length,
+      lang: transcriptSiteResult.lang,
+      source: 'transcriptsite'
     };
   }
 
