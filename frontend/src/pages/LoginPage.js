@@ -7,16 +7,16 @@ import { Zap, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email:'', password:'' });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
 
   const validate = () => {
     const e = {};
-    if (!form.email) e.email = 'Email is required';
+    if (!form.email)                         e.email    = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(form.email)) e.email = 'Invalid email';
-    if (!form.password) e.password = 'Password is required';
+    if (!form.password)                      e.password = 'Password is required';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -37,21 +37,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center',
-      background:'var(--bg-void)', padding:24, position:'relative',
-    }}>
-      {/* Glow */}
+    <div className="auth-page">
+      {/* Ambient glow */}
       <div style={{
         position:'fixed', top:'30%', left:'50%', transform:'translate(-50%,-50%)',
-        width:'50vw', height:'40vh',
+        width:'clamp(200px,50vw,600px)', height:'40vh',
         background:'radial-gradient(ellipse,rgba(245,158,11,0.06) 0%,transparent 70%)',
         pointerEvents:'none',
       }} />
 
-      <div style={{ width:'100%', maxWidth:420, position:'relative', zIndex:1 }}>
+      <div className="auth-card">
         {/* Logo */}
-        <div style={{ textAlign:'center', marginBottom:36 }}>
+        <div style={{ textAlign:'center', marginBottom:'clamp(24px,4vw,36px)' }}>
           <Link to="/" style={{ display:'inline-flex', alignItems:'center', gap:10, textDecoration:'none' }}>
             <div style={{
               width:40, height:40, borderRadius:10,
@@ -66,47 +63,60 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <div className="card" style={{ padding:36 }}>
-          <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:26, marginBottom:6 }}>
+        <div className="card">
+          <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, fontSize:'clamp(22px,3vw,26px)', marginBottom:6 }}>
             Welcome back
           </h1>
-          <p style={{ color:'var(--text-secondary)', fontSize:14, marginBottom:28 }}>
+          <p style={{ color:'var(--text-secondary)', fontSize:14, marginBottom:'clamp(20px,3vw,28px)' }}>
             Sign in to your account to continue
           </p>
 
           <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:18 }}>
+            {/* Email */}
             <div className="input-group">
-              <label className="input-label">Email</label>
+              <label className="input-label" htmlFor="login-email">Email</label>
               <div style={{ position:'relative' }}>
-                <Mail size={15} style={{ position:'absolute', left:14, top:'50%', transform:'translateY(-50%)', color:'var(--text-muted)' }} />
+                <Mail size={15} style={{ position:'absolute', left:14, top:'50%', transform:'translateY(-50%)', color:'var(--text-muted)', pointerEvents:'none' }} />
                 <input
+                  id="login-email"
                   type="email"
                   className={`input ${errors.email ? 'input-error' : ''}`}
-                  style={{ paddingLeft:40 }}
+                  style={{ paddingLeft:42 }}
                   placeholder="you@example.com"
                   value={form.email}
-                  onChange={e => { setForm(f=>({...f,email:e.target.value})); setErrors(er=>({...er,email:''})); }}
+                  autoComplete="email"
+                  onChange={e => { setForm(f => ({...f, email:e.target.value})); setErrors(er => ({...er, email:''})); }}
                 />
               </div>
               {errors.email && <span className="error-msg">{errors.email}</span>}
             </div>
 
+            {/* Password */}
             <div className="input-group">
-              <label className="input-label">Password</label>
+              <label className="input-label" htmlFor="login-password">Password</label>
               <div style={{ position:'relative' }}>
-                <Lock size={15} style={{ position:'absolute', left:14, top:'50%', transform:'translateY(-50%)', color:'var(--text-muted)' }} />
+                <Lock size={15} style={{ position:'absolute', left:14, top:'50%', transform:'translateY(-50%)', color:'var(--text-muted)', pointerEvents:'none' }} />
                 <input
+                  id="login-password"
                   type={showPass ? 'text' : 'password'}
                   className={`input ${errors.password ? 'input-error' : ''}`}
-                  style={{ paddingLeft:40, paddingRight:44 }}
+                  style={{ paddingLeft:42, paddingRight:48 }}
                   placeholder="••••••••"
                   value={form.password}
-                  onChange={e => { setForm(f=>({...f,password:e.target.value})); setErrors(er=>({...er,password:''})); }}
+                  autoComplete="current-password"
+                  onChange={e => { setForm(f => ({...f, password:e.target.value})); setErrors(er => ({...er, password:''})); }}
                 />
-                <button type="button" onClick={() => setShowPass(!showPass)} style={{
-                  position:'absolute', right:14, top:'50%', transform:'translateY(-50%)',
-                  background:'none', border:'none', cursor:'pointer', color:'var(--text-muted)', padding:0,
-                }}>
+                <button
+                  type="button"
+                  onClick={() => setShowPass(!showPass)}
+                  style={{
+                    position:'absolute', right:14, top:'50%', transform:'translateY(-50%)',
+                    background:'none', border:'none', cursor:'pointer', color:'var(--text-muted)',
+                    padding:4, display:'flex', alignItems:'center', justifyContent:'center',
+                    minHeight:32, minWidth:32,
+                  }}
+                  aria-label={showPass ? 'Hide password' : 'Show password'}
+                >
                   {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
@@ -114,7 +124,10 @@ export default function LoginPage() {
             </div>
 
             <button type="submit" className="btn btn-primary btn-lg" disabled={loading} style={{ marginTop:6 }}>
-              {loading ? <><div className="spinner" style={{ width:18, height:18 }} /> Signing in...</> : <>Sign In <ArrowRight size={17} /></>}
+              {loading
+                ? <><div className="spinner" style={{ width:18, height:18 }} /> Signing in...</>
+                : <>Sign In <ArrowRight size={17} /></>
+              }
             </button>
           </form>
         </div>
