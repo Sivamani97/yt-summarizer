@@ -269,10 +269,9 @@ code, pre { font-family: var(--font-mono); }
   line-height: 1.9;
   color: var(--text-secondary);
   white-space: pre-wrap;
-  text-align: justify;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
   word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1099,9 +1098,6 @@ select.input {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .summary-text {
-    text-align: justify;
-  }
 
   .form-actions-row {
     justify-content: flex-end;
@@ -1217,12 +1213,6 @@ select.input {
     flex-shrink: 0;
   }
 
-  /* ── Summary: left-aligned on mobile (avoid ragged justify gaps) ── */
-  .summary-text {
-    text-align: left;
-    hyphens: none;
-    -webkit-hyphens: none;
-  }
 
   /* ── Notes save button: full-width on mobile ── */
   .notes-save-row {
