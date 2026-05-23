@@ -230,7 +230,7 @@ export default function VideoDetailPage() {
           {activeTab === 'summary' && (
             <div className="card">
               <div className="section-header">
-                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
+                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(16px,2.5vw,18px)', display:'flex', alignItems:'center', gap:8 }}>
                   <FileText size={18} color="var(--amber)" /> Summary
                 </h2>
                 <CopyButton text={analysis?.summary || ''} />
@@ -245,7 +245,7 @@ export default function VideoDetailPage() {
           {activeTab === 'bullets' && (
             <div className="card">
               <div className="section-header">
-                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
+                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(16px,2.5vw,18px)', display:'flex', alignItems:'center', gap:8 }}>
                   <Zap size={18} color="var(--amber)" /> Key Takeaways
                 </h2>
                 <CopyButton text={(analysis?.bulletPoints || []).map((b, i) => `${i + 1}. ${b}`).join('\n')} label="Copy All" />
@@ -287,7 +287,7 @@ export default function VideoDetailPage() {
           {activeTab === 'concepts' && (
             <div className="card">
               <div className="section-header">
-                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:18, display:'flex', alignItems:'center', gap:8 }}>
+                <h2 style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(16px,2.5vw,18px)', display:'flex', alignItems:'center', gap:8 }}>
                   <Brain size={18} color="var(--amber)" /> Key Concepts
                 </h2>
                 <CopyButton
@@ -461,7 +461,7 @@ export default function VideoDetailPage() {
         {/* ── Personal Notes ── */}
         <div className="card" style={{ marginTop:'clamp(20px,3vw,28px)' }}>
           <h3 style={{
-            fontFamily:'var(--font-display)', fontWeight:700, fontSize:16,
+            fontFamily:'var(--font-display)', fontWeight:700, fontSize:'clamp(15px,2vw,16px)',
             marginBottom:14, display:'flex', alignItems:'center', gap:8, flexWrap:'wrap',
           }}>
             <BookOpen size={16} color="var(--amber)" /> Personal Notes
@@ -477,7 +477,7 @@ export default function VideoDetailPage() {
             className="input"
             rows={5}
             placeholder="Add your notes, thoughts, or reflections about this video…"
-            style={{ resize:'vertical', fontFamily:'var(--font-body)', lineHeight:1.7, fontSize:14 }}
+            style={{ resize:'vertical', fontFamily:'var(--font-body)', lineHeight:1.7, fontSize:16 }}
           />
           <div className="notes-save-row">
             <button

@@ -9,21 +9,22 @@ import toast from 'react-hot-toast';
 import { Search, Star, Zap, Youtube, RotateCcw } from 'lucide-react';
 
 export default function HistoryPage() {
-  const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [filterFav, setFilterFav] = useState(false);
+  const [videos,           setVideos]           = useState([]);
+  const [loading,          setLoading]          = useState(true);
+  const [search,           setSearch]           = useState('');
+  const [filterFav,        setFilterFav]        = useState(false);
   const [filterDifficulty, setFilterDifficulty] = useState('');
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState(null);
+  const [page,             setPage]             = useState(1);
+  const [pagination,       setPagination]       = useState(null);
+
   const debouncedSearch = useDebounce(search, 350);
 
   const fetchVideos = useCallback(async (pg = 1) => {
     setLoading(true);
     try {
       const params = { page: pg, limit: 12 };
-      if (debouncedSearch)    params.search   = debouncedSearch;
-      if (filterFav)          params.favorite  = true;
+      if (debouncedSearch) params.search   = debouncedSearch;
+      if (filterFav)       params.favorite = true;
       const { data } = await videoAPI.getHistory(params);
       setVideos(data.videos);
       setPagination(data.pagination);
@@ -63,44 +64,47 @@ export default function HistoryPage() {
     <main className="main-content">
       <div className="container">
 
-        {/* Header */}
+        {/* ── Header ── */}
         <div style={{
-          display:'flex', alignItems:'center', justifyContent:'space-between',
-          marginBottom:'clamp(20px,3vw,32px)', flexWrap:'wrap', gap:16,
+          display: 'flex', alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          marginBottom: 'clamp(20px,3vw,32px)',
+          flexWrap: 'wrap', gap: 16,
         }}>
           <div>
             <h1 style={{
-              fontFamily:'var(--font-display)', fontWeight:800,
-              fontSize:'clamp(22px,3.5vw,36px)', marginBottom:6,
+              fontFamily: 'var(--font-display)', fontWeight: 800,
+              fontSize: 'clamp(22px,3.5vw,36px)', marginBottom: 6,
             }}>
               Video History
             </h1>
-            <p style={{ color:'var(--text-secondary)', fontSize:'clamp(13px,1.6vw,15px)' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(13px,1.6vw,15px)' }}>
               {pagination
                 ? `${pagination.total} video${pagination.total !== 1 ? 's' : ''} analyzed`
                 : 'Your AI-analyzed videos'}
             </p>
           </div>
-          <Link to="/analyze" className="btn btn-primary" style={{ gap:8, flexShrink:0 }}>
+          <Link to="/analyze" className="btn btn-primary" style={{ gap: 8, flexShrink: 0 }}>
             <Zap size={15} /> New Analysis
           </Link>
         </div>
 
-        {/* Filter bar — uses .filter-bar class */}
+        {/* ── Filter bar — grid layout on mobile ── */}
         <div className="filter-bar">
           {/* Search */}
           <div className="filter-search">
-            <Search size={15} style={{
-              position:'absolute', left:14, top:'50%', transform:'translateY(-50%)',
-              color:'var(--text-muted)', pointerEvents:'none',
-            }} />
+            <Search
+              size={15}
+              className="filter-search-icon"
+            />
             <input
               type="text"
               className="input"
-              style={{ paddingLeft:40, width:'100%' }}
+              style={{ paddingLeft: 42, width: '100%' }}
               placeholder="Search title, channel, tag…"
               value={search}
               onChange={e => setSearch(e.target.value)}
+              aria-label="Search videos"
             />
           </div>
 
@@ -109,6 +113,7 @@ export default function HistoryPage() {
             value={filterDifficulty}
             onChange={e => setFilterDifficulty(e.target.value)}
             className="input filter-select"
+            aria-label="Filter by difficulty"
           >
             <option value="">All Levels</option>
             <option value="beginner">Beginner</option>
@@ -116,24 +121,32 @@ export default function HistoryPage() {
             <option value="advanced">Advanced</option>
           </select>
 
-          {/* Favorites toggle */}
-          <button
-            onClick={() => setFilterFav(!filterFav)}
-            className={`btn ${filterFav ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ gap:7, flexShrink:0 }}
-          >
-            <Star size={15} fill={filterFav ? 'currentColor' : 'none'} /> Favorites
-          </button>
-
-          {/* Clear filters */}
-          {hasFilters && (
-            <button onClick={resetFilters} className="btn btn-ghost btn-sm" style={{ gap:6, flexShrink:0 }}>
-              <RotateCcw size={13} /> Clear
+          {/* Favorites + Clear — grouped */}
+          <div className="filter-actions">
+            <button
+              onClick={() => setFilterFav(!filterFav)}
+              className={`btn btn-sm ${filterFav ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ gap: 6 }}
+              aria-pressed={filterFav}
+            >
+              <Star size={14} fill={filterFav ? 'currentColor' : 'none'} />
+              <span style={{ whiteSpace: 'nowrap' }}>Favorites</span>
             </button>
-          )}
+
+            {hasFilters && (
+              <button
+                onClick={resetFilters}
+                className="btn btn-ghost btn-sm"
+                style={{ gap: 5 }}
+                aria-label="Clear all filters"
+              >
+                <RotateCcw size={13} /> Clear
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Video grid */}
+        {/* ── Video grid ── */}
         {loading ? (
           <div className="grid-responsive">
             {[...Array(8)].map((_, i) => <VideoCardSkeleton key={i} />)}
@@ -142,7 +155,11 @@ export default function HistoryPage() {
           <EmptyState
             icon={Youtube}
             title={hasFilters ? 'No videos match your filters' : 'No videos yet'}
-            description={hasFilters ? 'Try adjusting your search or clearing filters.' : 'Analyze your first YouTube video to see it here.'}
+            description={
+              hasFilters
+                ? 'Try adjusting your search or clearing filters.'
+                : 'Analyze your first YouTube video to see it here.'
+            }
             actionLabel={hasFilters ? 'Clear Filters' : 'Analyze a Video'}
             actionTo={hasFilters ? undefined : '/analyze'}
             actionOnClick={hasFilters ? resetFilters : undefined}
@@ -151,35 +168,55 @@ export default function HistoryPage() {
           <>
             <div className="grid-responsive">
               {displayed.map(video => (
-                <VideoCard key={video._id} video={video} onToggleFavorite={handleToggleFav} onDelete={handleDelete} />
+                <VideoCard
+                  key={video._id}
+                  video={video}
+                  onToggleFavorite={handleToggleFav}
+                  onDelete={handleDelete}
+                />
               ))}
             </div>
 
-            {/* Pagination */}
+            {/* ── Pagination ── */}
             {pagination && pagination.pages > 1 && (
-              <div style={{
-                display:'flex', justifyContent:'center', alignItems:'center',
-                gap:'clamp(4px,1vw,8px)', marginTop:'clamp(24px,3vw,36px)',
-                flexWrap:'wrap',
-              }}>
-                <button className="btn btn-secondary btn-sm" disabled={page === 1} onClick={() => fetchVideos(page - 1)}>
+              <div className="pagination-row">
+                <button
+                  className="btn btn-secondary btn-sm"
+                  disabled={page === 1}
+                  onClick={() => fetchVideos(page - 1)}
+                  aria-label="Previous page"
+                >
                   ← Prev
                 </button>
+
                 {Array.from({ length: Math.min(pagination.pages, 5) }, (_, i) => i + 1).map(p => (
                   <button
                     key={p}
                     onClick={() => fetchVideos(p)}
                     className={`btn btn-sm ${page === p ? 'btn-primary' : 'btn-ghost'}`}
-                    style={{ minWidth:36 }}
-                  >{p}</button>
+                    style={{ minWidth: 40 }}
+                    aria-label={`Page ${p}`}
+                    aria-current={page === p ? 'page' : undefined}
+                  >
+                    {p}
+                  </button>
                 ))}
-                <button className="btn btn-secondary btn-sm" disabled={!pagination.hasMore} onClick={() => fetchVideos(page + 1)}>
+
+                <button
+                  className="btn btn-secondary btn-sm"
+                  disabled={!pagination.hasMore}
+                  onClick={() => fetchVideos(page + 1)}
+                  aria-label="Next page"
+                >
                   Next →
                 </button>
               </div>
             )}
 
-            <p style={{ textAlign:'center', color:'var(--text-muted)', fontSize:13, marginTop:16 }}>
+            <p style={{
+              textAlign: 'center', color: 'var(--text-muted)',
+              fontSize: 13, marginTop: 12,
+            }}>
               Showing {displayed.length} of {pagination?.total || displayed.length} videos
             </p>
           </>

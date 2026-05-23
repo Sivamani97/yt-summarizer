@@ -18,39 +18,36 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 480
 
   return (
     <div
+      className="modal-overlay"
       onClick={onClose}
-      style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
-        background: 'rgba(5,5,10,0.8)', backdropFilter: 'blur(8px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: 24,
-        animation: 'fadeIn 0.2s ease',
-      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
     >
       <div
-        onClick={e => e.stopPropagation()}
-        style={{
-          width: '100%', maxWidth,
-          background: 'var(--bg-surface)',
-          border: '1px solid var(--border-default)',
-          borderRadius: 'var(--radius-xl)',
-          boxShadow: 'var(--shadow-lg)',
-          animation: 'fadeIn 0.25s ease',
-          overflow: 'hidden',
-        }}
+        className="modal-box"
+        style={{ maxWidth }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '20px 24px', borderBottom: '1px solid var(--border-subtle)',
-        }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 18 }}>{title}</h2>
-          <button onClick={onClose} className="btn btn-ghost btn-sm" style={{ padding: 6 }}>
+        <div className="modal-header">
+          <h2
+            id="modal-title"
+            style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(16px,2.5vw,18px)' }}
+          >
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="btn btn-ghost btn-sm"
+            style={{ padding: 8, minWidth: 40, minHeight: 40 }}
+            aria-label="Close modal"
+          >
             <X size={18} />
           </button>
         </div>
         {/* Body */}
-        <div style={{ padding: 24 }}>{children}</div>
+        <div className="modal-body">{children}</div>
       </div>
     </div>
   );
