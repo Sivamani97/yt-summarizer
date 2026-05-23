@@ -263,15 +263,18 @@ code, pre { font-family: var(--font-mono); }
   flex-wrap: wrap;
 }
 
-/* Summary text */
+/* Summary text — justified via word-spacing, no word splitting */
 .summary-text {
   font-size: clamp(14px, 1.6vw, 15px);
   line-height: 1.9;
   color: var(--text-secondary);
   white-space: pre-wrap;
-  text-align: left;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  text-align: justify;
+  text-align-last: left;       /* last line of each paragraph stays left */
+  word-break: normal;          /* never split a word across lines         */
+  overflow-wrap: normal;       /* no forced breaks inside words           */
+  hyphens: none;               /* no hyphens / no half-word breaks        */
+  -webkit-hyphens: none;
 }
 
 /* ═══════════════════════════════════════════════
